@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "outDir": "assets/js",
+  },
+  "files": [
+    "assets/ts/app.ts",
+    "assets/ts/words.ts",
+  ]
+}
