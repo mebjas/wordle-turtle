@@ -20,7 +20,8 @@ class WordleDatasetManager {
     }
 
     public getRandomWord(): string {
-        let id = Math.floor(Math.random() * this.list.length) - 1;
+        let id = Math.floor(Math.random() * this.list.length);
+        id %= this.list.length;
         return this.list[id];
     }
 
@@ -168,8 +169,8 @@ class WordleClient {
         console.log(`Loaded ${this.list.length} entries to dataset.`);
 
         this.startingWords = ['arose', 'react', 'adieu', 'later', 'sired', 
-        'tears', 'alone', 'arise', 'about', 'atone', 'irate', 'snare', 'cream',
-        'paint', 'worse', 'sauce', 'anime', 'prowl', 'roast', 'drape', 'media'];
+            'tears', 'alone', 'arise', 'about', 'atone', 'irate', 'snare', 'cream',
+            'paint', 'worse', 'sauce', 'anime', 'prowl', 'roast', 'drape', 'media'];
     }
 
     public recommend(
@@ -253,8 +254,14 @@ class WordleClient {
     }
 
     public recommendStartingWord(): string {
-        let idx = Math.floor(Math.random() * this.startingWords.length) - 1;
-        return this.startingWords[idx];
+        let idx = Math.floor(Math.random() * this.startingWords.length);
+        idx %= this.startingWords.length;
+        let suggestion = this.startingWords[idx];
+        if (!suggestion) {
+            console.error("No starting suggestion", idx, this.startingWords.length);
+            return this.startingWords[0];
+        }
+        return suggestion;
     }
 
     private contains(needle: string, haystack: string): boolean {

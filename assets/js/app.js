@@ -16,7 +16,8 @@ var WordleDatasetManager = /** @class */ (function () {
         console.log("Loaded " + this.list.length + " entries to dataset.");
     }
     WordleDatasetManager.prototype.getRandomWord = function () {
-        var id = Math.floor(Math.random() * this.list.length) - 1;
+        var id = Math.floor(Math.random() * this.list.length);
+        id %= this.list.length;
         return this.list[id];
     };
     WordleDatasetManager.prototype.isValid = function (word) {
@@ -196,8 +197,14 @@ var WordleClient = /** @class */ (function () {
         return recommendedResults[0];
     };
     WordleClient.prototype.recommendStartingWord = function () {
-        var idx = Math.floor(Math.random() * this.startingWords.length) - 1;
-        return this.startingWords[idx];
+        var idx = Math.floor(Math.random() * this.startingWords.length);
+        idx %= this.startingWords.length;
+        var suggestion = this.startingWords[idx];
+        if (!suggestion) {
+            console.error("No starting suggestion", idx, this.startingWords.length);
+            return this.startingWords[0];
+        }
+        return suggestion;
     };
     WordleClient.prototype.contains = function (needle, haystack) {
         console.assert(needle.length === 1);
